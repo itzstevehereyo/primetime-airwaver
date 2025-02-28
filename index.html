@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Primetime Airwaver</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <h1>Primetime Airwaver</h1>
+
+    <div id="create-show">
+        <h2>Create a Show</h2>
+        <input type="text" id="show-name" placeholder="Show Name">
+        <select id="show-genre">
+            <option value="Drama">Drama</option>
+            <option value="Comedy">Comedy</option>
+            <option value="News">News</option>
+            <option value="Reality">Reality</option>
+        </select>
+        <button onclick="addShow()">Add Show</button>
+    </div>
+
+    <div id="schedule">
+        <h2>Schedule Shows</h2>
+        <select id="schedule-show"></select>
+        <select id="schedule-time">
+            <option value="Morning">Morning</option>
+            <option value="Afternoon">Afternoon</option>
+            <option value="Prime Time">Prime Time</option>
+            <option value="Late Night">Late Night</option>
+        </select>
+        <button onclick="scheduleShow()">Schedule</button>
+    </div>
+
+    <div id="timetable">
+        <h2>Airing Timetable</h2>
+        <ul id="schedule-list"></ul>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
