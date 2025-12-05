@@ -1,43 +1,68 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Primetime Airwaver</title>
-    <link rel="stylesheet" href="styles.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Primetime Airwaver</title>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
-    <h1>Primetime Airwaver</h1>
-
-    <div id="create-show">
-        <h2>Create a Show</h2>
-        <input type="text" id="show-name" placeholder="Show Name">
-        <select id="show-genre">
-            <option value="Drama">Drama</option>
-            <option value="Comedy">Comedy</option>
-            <option value="News">News</option>
-            <option value="Reality">Reality</option>
-        </select>
-        <button onclick="addShow()">Add Show</button>
+  <header class="topbar">
+    <h1 class="title">Primetime Airwaver</h1>
+    <div class="network">
+      <div>Network Reputation: <span id="network-score">50</span></div>
+      <div id="last-air" class="muted">No shows aired yet</div>
     </div>
+  </header>
 
-    <div id="schedule">
-        <h2>Schedule Shows</h2>
+  <main class="container">
+    <section class="card">
+      <h2>Create a Show</h2>
+      <div class="row">
+        <input id="show-name" placeholder="Show name" />
+        <select id="show-genre">
+          <option value="Drama">Drama</option>
+          <option value="Comedy">Comedy</option>
+          <option value="News">News</option>
+          <option value="Reality">Reality</option>
+        </select>
+        <button id="add-show-btn">Add Show</button>
+      </div>
+
+      <div class="shows-list">
+        <h3>Available shows</h3>
+        <ul id="shows-ul"></ul>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Schedule Shows</h2>
+      <div class="row">
         <select id="schedule-show"></select>
         <select id="schedule-time">
-            <option value="Morning">Morning</option>
-            <option value="Afternoon">Afternoon</option>
-            <option value="Prime Time">Prime Time</option>
-            <option value="Late Night">Late Night</option>
+          <option value="Morning">Morning</option>
+          <option value="Afternoon">Afternoon</option>
+          <option value="Prime Time">Prime Time</option>
+          <option value="Late Night">Late Night</option>
         </select>
-        <button onclick="scheduleShow()">Schedule</button>
-    </div>
+        <button id="schedule-btn">Schedule</button>
+      </div>
 
-    <div id="timetable">
-        <h2>Airing Timetable</h2>
-        <ul id="schedule-list"></ul>
-    </div>
+      <div class="timetable">
+        <h3>Airing Timetable (drag to reorder)</h3>
+        <ul id="schedule-list" class="draggable-list"></ul>
+        <div class="timetable-controls">
+          <button id="air-next-btn">Air Next Show</button>
+          <button id="simulate-all-btn">Simulate All</button>
+          <button id="clear-schedule-btn">Clear Schedule</button>
+        </div>
+      </div>
+    </section>
 
-    <script src="script.js"></script>
-</body>
-</html>
+    <section class="card">
+      <h2>Network Log</h2>
+      <div id="log" class="log"></div>
+    </section>
+  </main>
+
+  <footer c
