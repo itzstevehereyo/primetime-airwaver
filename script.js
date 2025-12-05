@@ -316,23 +316,50 @@ function buildTimetableGrid(){
     }
   }
 }
-function renderTimetable(){
-  // clear all slots then populate
-  const slots = timetableEl.querySelectorAll('.slot');
-  slots.forEach(slot => slot.innerHTML = '');
-  schedule.forEach(s => {
-    const selector = `.slot[data-day="${s.day}"][data-hour="${s.hour}"]`;
-    const slot = timetableEl.querySelector(selector);
-    if(!slot) return;
-    const show = shows.find(x=>x.id===s.showId);
-    const title = show ? show.name : 'Unknown';
-    const display = document.createElement('div'); display.className='item';
-    const left = document.createElement('div'); left.innerHTML = `<strong>${escapeHtml(title)}</strong>${show?.type==='series' ? `<div class="muted small">${escapeHtml(show.episodes[(s.epIndex||0)]?.title||'Ep')}</div>` : ''}`;
-    const right = document.createElement('div'); right.innerHTML = `<button class="secondary" onclick="removeScheduleAt(${s.day},${s.hour})">X</button>`;
-    display.appendChild(left); display.appendChild(right);
-    slot.appendChild(display);
-  });
+function renderTimetable() {
+    // Clear all slots first
+    const slots = timetableEl.querySelectorAll('.slot');
+    slots.forEach(slot => slot.innerHTML = '');
+
+    schedule.forEach(s => {
+        const selector = `.slot[data-day="${s.day}"][data-hour="${s.hour}"]`;
+        const slot = timetableEl.querySelector(selector);
+        if (!slot) return;
+
+        const show = shows.find(x => x.id === s.showId);
+        const title = show ? show.name : 'Unknown';
+
+        // Build episode label (if series)
+        let epLabel = "";
+        if (show && show.type === "series") {
+            const epIndex = typeof s.epIndex === "number" ? s.epIndex : 0;
+            const ep = show.episodes[epIndex];
+            const epName = ep ? ep.title : "Episode";
+            epLabel = `<div class="muted small">${escapeHtml(epName)}</div>`;
+        }
+
+        // Build DOM
+        const display = document.createElement('div');
+        display.className = 'item';
+
+        const left = document.createElement('div');
+        left.innerHTML = `
+            <strong>${escapeHtml(title)}</strong>
+            ${epLabel}
+        `;
+
+        const right = document.createElement('div');
+        right.innerHTML = `
+            <button class="secondary" onclick="removeScheduleAt(${s.day}, ${s.hour})">X</button>
+        `;
+
+        display.appendChild(left);
+        display.appendChild(right);
+
+        slot.appendChild(display);
+    });
 }
+
 window.removeScheduleAt = function(day,hour){
   schedule = schedule.filter(s => !(s.day==day && s.hour==hour));
   renderScheduledFlat(); renderTimetable(); log('Removed slot');
