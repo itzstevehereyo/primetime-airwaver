@@ -1,72 +1,119 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Primetime Airwaver</title>
+  <title>Primetime Airwaver — Studio</title>
   <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
   <header class="topbar">
     <h1 class="title">Primetime Airwaver</h1>
     <div class="network">
-      <div>Network Reputation: <span id="network-score">50</span></div>
+      <div>Network Reputation: <span id="network-score">50.0</span></div>
       <div id="last-air" class="muted">No shows aired yet</div>
     </div>
   </header>
 
   <main class="container">
-    <section class="card">
-      <h2>Create a Show</h2>
+    <!-- LEFT COLUMN: Create / Configure -->
+    <section class="card" id="create-panel">
+      <h2>Create a Show / Movie / Series</h2>
+
       <div class="row">
-        <input id="show-name" placeholder="Show name" />
+        <input id="show-name" placeholder="Title (e.g. Star Drama)" />
+        <select id="show-type">
+          <option value="series">TV Series</option>
+          <option value="movie">Movie</option>
+          <option value="talkshow">Talk Show</option>
+          <option value="gameshow">Game Show</option>
+          <option value="news">News</option>
+          <option value="documentary">Documentary</option>
+        </select>
         <select id="show-genre">
-          <option value="Drama">Drama</option>
-          <option value="Comedy">Comedy</option>
-          <option value="News">News</option>
-          <option value="Reality">Reality</option>
+          <option>Drama</option><option>Comedy</option><option>News</option>
+          <option>Reality</option><option>Documentary</option><option>Sci-Fi</option>
+          <option>Kids</option><option>Sports</option><option>Variety</option>
         </select>
-        <button id="add-show-btn">Add Show</button>
       </div>
 
-      <div class="shows-list">
-        <h3>Available shows</h3>
-        <ul id="shows-ul"></ul>
-      </div>
-    </section>
-
-    <section class="card">
-      <h2>Schedule Shows</h2>
-      <div class="row">
-        <select id="schedule-show"></select>
-        <select id="schedule-time">
-          <option value="Morning">Morning</option>
-          <option value="Afternoon">Afternoon</option>
-          <option value="Prime Time">Prime Time</option>
-          <option value="Late Night">Late Night</option>
-        </select>
-        <button id="schedule-btn">Schedule</button>
-      </div>
-
-      <div class="timetable">
-        <h3>Airing Timetable (drag to reorder)</h3>
-        <ul id="schedule-list" class="draggable-list"></ul>
-        <div class="timetable-controls">
-          <button id="air-next-btn">Air Next Show</button>
-          <button id="simulate-all-btn">Simulate All</button>
-          <button id="clear-schedule-btn">Clear Schedule</button>
+      <!-- Movie specific -->
+      <div id="movie-config" class="config-block hidden">
+        <h3>Movie Configuration</h3>
+        <div class="row small-row">
+          <input id="movie-director" placeholder="Director" />
+          <input id="movie-cinematographer" placeholder="Cinematographer" />
+        </div>
+        <div class="row small-row">
+          <input id="movie-writer" placeholder="Script Writer" />
+          <input id="movie-actors" placeholder="Actors (comma separated)" />
+        </div>
+        <div class="row small-row">
+          <label class="tiny">Franchise of:</label>
+          <select id="movie-parent"></select>
+          <button id="create-sequel-btn" class="secondary">Create Sequel (makes new show)</button>
         </div>
       </div>
+
+      <!-- Series specific -->
+      <div id="series-config" class="config-block hidden">
+        <h3>Series Configuration</h3>
+        <div class="row small-row">
+          <input id="series-showrunner" placeholder="Showrunner / Head Writer" />
+          <input id="series-seasons" placeholder="Seasons (start at 1)" type="number" min="1" value="1" />
+          <input id="series-episodes" placeholder="Episodes this season" type="number" min="1" value="6" />
+        </div>
+
+        <div class="row small-row">
+          <button id="generate-episodes-btn" class="secondary">Generate Episodes</button>
+          <button id="add-episode-manual-btn" class="secondary">Add Episode Manually</button>
+        </div>
+
+        <div id="episodes-list" class="episodes-list"></div>
+      </div>
+
+      <div class="row">
+        <button id="add-show-btn">Create & Add to Pool</button>
+      </div>
+
+      <hr/>
+
+      <h3>Not aired yet (drag to timetable)</h3>
+      <ul id="pool-list" class="pool-list"></ul>
     </section>
 
-    <section class="card">
-      <h2>Network Log</h2>
+    <!-- MIDDLE: Timetable -->
+    <section class="card wide" id="timetable-card">
+      <h2>Weekly Timetable — Drag shows into a day/hour slot</h2>
+      <div class="timetable-legend muted">Drag from "Not aired yet" or from scheduled list. Dropping onto a slot schedules it.</div>
+      <div id="timetable" class="timetable"></div>
+
+      <div class="row timetable-controls">
+        <button id="toggle-auto" class="secondary">Toggle Auto-air (on)</button>
+        <button id="air-now-btn">Air Now (simulate current slot)</button>
+        <button id="clear-week-btn" class="secondary">Clear Week</button>
+      </div>
+
+      <h3>Scheduled (flat list)</h3>
+      <ul id="scheduled-flat" class="scheduled-flat"></ul>
+    </section>
+
+    <!-- RIGHT column: Requests / Archive / Log -->
+    <section class="card" id="right-panel">
+      <h2>Series Renewal Requests</h2>
+      <div id="renew-requests" class="muted">No requests yet.</div>
+
+      <h2 style="margin-top:14px">Archived Shows</h2>
+      <ul id="archived-list" class="pool-list"></ul>
+
+      <h2 style="margin-top:14px">Network Log</h2>
       <div id="log" class="log"></div>
     </section>
+
   </main>
 
   <footer class="footer muted">
-    Tip: schedule shows in Prime Time for better ratings. Reorder by dragging schedule entries.
+    Tip: drag from pool to exact day & hour. Series episode names display when scheduled. You can rename shows from the pool by double-clicking them.
   </footer>
 
   <script src="script.js"></script>
